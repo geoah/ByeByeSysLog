@@ -1,0 +1,7 @@
+ByeByeSysLog
+============
+
+BBSL is a web front end for SysLog-NG.
+Currently is in a very alpha state.
+
+It is released under a GPLv3 license as is ExtJs on which BBSL is based on.
