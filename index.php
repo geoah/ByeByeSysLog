@@ -11,8 +11,9 @@
     <link rel="stylesheet" type="text/css" href="resources/libs/ext-ux/gridfilters/css/GridFilters.css" />
     <link rel="stylesheet" type="text/css" href="resources/libs/ext-ux/gridfilters/css/RangeMenu.css" />
 
-    <style type="text/css"> 
-        .x-grid3-row pre { padding: 5px; color: #888; }
+    <style type="text/css">
+		.x-grid3-row td { -moz-user-select:text; }
+	    .x-grid3-row-body pre { color: #444; padding: 5px;  white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
         .x-grid3-row-alt { background-color: #edf1ff; border-bottom: 1px solid #CCC; }
         .x-grid3-row { border-width: 0px; border-bottom: 1px solid #CCC; }
         .x-grid3-row-over { background-image: none; border-width: 0px; border-bottom: 1px solid #CCC;}
