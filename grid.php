@@ -97,9 +97,13 @@ $total = mysql_result($total, 0, 0);
 
 $i = 0;
 $arr = array();
-while($obj = mysql_fetch_object($rs)) {
-	$obj->id = $start + $i++;
-    $arr[] = $obj;
+while($row = mysql_fetch_assoc($rs)) {
+	$row['id'] = $start + $i++;
+	$encodedRow = array();
+	foreach($row as $key=>$value){
+		$encodedRow[$key] = htmlentities($value);
+	}
+	$arr[] = $encodedRow;
 }
 
 // return response to client
