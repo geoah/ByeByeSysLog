@@ -16,89 +16,63 @@ $start  = isset($_REQUEST['start'])  ? $_REQUEST['start']  :  0;
 $count  = isset($_REQUEST['limit'])  ? $_REQUEST['limit']  : 20;
 $sort   = isset($_REQUEST['sort'])   ? $_REQUEST['sort']   : '';
 $dir    = isset($_REQUEST['dir'])    ? $_REQUEST['dir']    : 'ASC';
-$filters = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : null;
 
-// GridFilters sends filters as an Array if not json encoded
-if (is_array($filters)) {
-    $encoded = false;
-} else {
-    $encoded = true;
-    $filters = json_decode($filters);
-}
+$query  = isset($_REQUEST['query'])    ? $_REQUEST['query']    : null;
+$host   = isset($_REQUEST['host'])    ? $_REQUEST['host']    : null;
 
-// initialize variables
-$where = ' 0 = 0 ';
-$qs = '';
+$where = '0=0';
 
-// loop through filters sent by client
-if (is_array($filters)) {
-    for ($i=0;$i<count($filters);$i++){
-        $filter = $filters[$i];
-
-        // assign filter data (location depends if encoded or not)
-        if ($encoded) {
-            $field = $filter->field;
-            $value = $filter->value;
-            $compare = isset($filter->comparison) ? $filter->comparison : null;
-            $filterType = $filter->type;
-        } else {
-            $field = $filter['field'];
-            $value = $filter['data']['value'];
-            $compare = isset($filter['data']['comparison']) ? $filter['data']['comparison'] : null;
-            $filterType = $filter['data']['type'];
-        }
-        
-        switch($filterType){
-            case 'string' : $qs .= " AND ".$field." LIKE '%".$value."%'"; Break;
-            case 'list' :
-                if (strstr($value,',')){
-                    $fi = explode(',',$value);
-                    for ($q=0;$q<count($fi);$q++){
-                        $fi[$q] = "'".$fi[$q]."'";
-                    }
-                    $value = implode(',',$fi);
-                    $qs .= " AND ".$field." IN (".$value.")";
-                }else{
-                    $qs .= " AND ".$field." = '".$value."'";
-                }
-            Break;
-            case 'boolean' : $qs .= " AND ".$field." = ".($value); Break;
-            case 'numeric' :
-                switch ($compare) {
-                    case 'eq' : $qs .= " AND ".$field." = ".$value; Break;
-                    case 'lt' : $qs .= " AND ".$field." < ".$value; Break;
-                    case 'gt' : $qs .= " AND ".$field." > ".$value; Break;
-                }
-            Break;
-            case 'date' :
-                switch ($compare) {
-                    case 'eq' : $qs .= " AND ".$field." = '".date('Y-m-d',strtotime($value))."'"; Break;
-                    case 'lt' : $qs .= " AND ".$field." < '".date('Y-m-d',strtotime($value))."'"; Break;
-                    case 'gt' : $qs .= " AND ".$field." > '".date('Y-m-d',strtotime($value))."'"; Break;
-                }
-            Break;
-        }
-    }
-    $where .= $qs;
+if($query){
+	$whereParts = array();
+	$query = trim($query);
+	$keys = array(
+		'host',
+		'facility',
+		'level',
+		'datetime',
+		'program',
+		'pid',
+		'msg',
+	);
+	
+	$positions = array();
+	foreach($keys as $key){
+		$position = strpos($query, $key.':');
+		if($position!==false){
+			$positions[$key] = $position;
+		}
+	}
+	arsort($positions);
+	
+	foreach($positions as $key=>$position){
+		$pair = substr($query, $position);
+		$query = trim(str_replace($pair, '', $query));
+		$pairs[$key] = trim(str_replace($key.':', '', $pair));
+	}
+	
+	foreach($pairs as $key=>$value){
+		$whereParts[] = "`{$key}` LIKE '%{$value}%'";
+	}
+	
+	$where .= ' AND ' . implode(' AND ', $whereParts);
 }
 
 if($host) $where .= " AND host = '".$host."'";
 
 // query the database
-$query = "SELECT * FROM {$table} WHERE ".$where;
+$sql = "SELECT * FROM {$table} WHERE " . $where;
 if ($sort != "") {
-    $query .= " ORDER BY ".$sort." ".$dir;
+    $sql .= " ORDER BY ".$sort." ".$dir;
 }
-$query .= " LIMIT ".$start.",".$count;
+$sql .= " LIMIT ".$start.",".$count;
 
-$rs = mysql_query($query);
+$rs = mysql_query($sql);
 $total = mysql_query("SELECT COUNT(pid) FROM {$table} WHERE ".$where);
 $total = mysql_result($total, 0, 0);
 
 $i = 0;
 $arr = array();
 while($row = mysql_fetch_assoc($rs)) {
-	$row['id'] = $start + $i++;
 	$encodedRow = array();
 	foreach($row as $key=>$value){
 		$encodedRow[$key] = htmlentities($value);

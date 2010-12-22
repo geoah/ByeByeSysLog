@@ -31,6 +31,12 @@
     <!-- overrides to base library -->
 
     <!-- extensions -->
+    <script type="text/javascript" src="resources/libs/ext-ux/RowExpander.js"></script>
+    <script type="text/javascript" src="resources/libs/ext-ux/FieldAutoExpand.js"></script> 
+    <script type="text/javascript" src="resources/libs/ext-ux/SearchField.js"></script> 
+	
+	<!--
+	<script type="text/javascript" src="resources/libs/ext-ux/GridHeaderFilters.js"></script>
 	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/menu/RangeMenu.js"></script>
 	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/menu/ListMenu.js"></script>
 	
@@ -41,8 +47,8 @@
 	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/ListFilter.js"></script>
 	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/NumericFilter.js"></script>
 	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/BooleanFilter.js"></script>
-    <script type="text/javascript" src="resources/libs/ext-ux/RowExpander.js"></script> 
-
+	-->
+	
     <!-- page specific -->
 	<script type="text/javascript" src="resources/js/Bb.sysLogGrid.js"></script>
 	<script type="text/javascript" src="resources/js/Bb.sysLogHosts.js"></script>

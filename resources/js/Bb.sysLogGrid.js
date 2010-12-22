@@ -32,7 +32,8 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 				'msg'
 			]
 		});
-
+		
+		/*
 		var filters = new Ext.ux.grid.GridFilters({
 			encode: false,
 			filters: [
@@ -44,7 +45,7 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 				{type: 'string', dataIndex: 'msg' }
 			]
 		});
-
+		*/
 		var expander = new Ext.ux.grid.RowExpander({
 			tpl : new Ext.Template(
 				'<pre>{msg}</pre>'
@@ -67,7 +68,7 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 				{dataIndex: 'level', header: 'Level', width: 40 }, 
 				{dataIndex: 'msg', header: 'Message', id: 'col-'+this.table+'-'+this.host+'-msg'},
 				*/
-				{dataIndex: 'msg', header: 'Log', renderer: function(val,p,record){
+				{dataIndex: 'msg', /*filter: {xtype: 'textfield'},*/ header: 'Log', renderer: function(val,p,record){
 					var r = '<pre>' +
 							Ext.util.Format.dateRenderer('M j H:i:s')(record.get('datetime')) + ' ' +
 							'<b>' + record.get('host') + '</b> ' +
@@ -97,13 +98,19 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 				}
 			},
 			loadMask: true,
-			plugins: [expander, filters],
+			plugins: [expander/*, new Ext.ux.grid.GridHeaderFilters()*//*filters*/],
 			//autoExpandColumn: 'col-'+this.table+'-'+this.host+'-msg',
 			bbar: new Ext.PagingToolbar({
 				store: store,
 				pageSize: 50,
-				plugins: [filters]
-			})
+				plugins: [/*filters*/]
+			}),
+			tbar: [
+				new Ext.ux.form.SearchField({
+					store: store,
+					width: 'auto'
+				})
+			]
 		};
 		
 		Ext.apply(this, Ext.apply(this.initialConfig, config));
