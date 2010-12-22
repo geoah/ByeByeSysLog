@@ -22,6 +22,10 @@ $host   = isset($_REQUEST['host'])    ? $_REQUEST['host']    : null;
 
 $where = '0=0';
 
+function sql_filter_last($value){
+	return date('Y-m-d H:i:s', strtotime('now -' . $value));
+}
+
 if($query){
 	$whereParts = array();
 	$query = trim($query);
@@ -33,6 +37,7 @@ if($query){
 		'program'=>array('mod'=>'=', 'wildcard'=>true),
 		'pid'=>array('mod'=>'=', 'wildcard'=>true),
 		'msg'=>array('mod'=>'LIKE', 'wildcard'=>true, 'prepend'=>'*', 'append'=>'*'),
+		'last'=>array('mod'=>'>=', 'column'=>'datetime', 'wildcard'=>false, 'function'=>'sql_filter_last')
 	);
 	
 	$positions = array();
@@ -51,22 +56,36 @@ if($query){
 	}
 	
 	foreach($pairs as $key=>$value){
+		if(@$keys[$key]['function']){
+			$value = $keys[$key]['function']($value);
+		}
+		if(@$keys[$key]['column']){
+			$column = $keys[$key]['column'];
+		}else{
+			$column = $key;
+		}
 		$value = @$keys[$key]['prepend'] . $value . @$keys[$key]['append'];
 		$allowWildcard = $keys[$key]['wildcard'];
 		if(($allowWildcard==true)&&(strstr($value, '*'))){
 			$mod = 'LIKE';
 			$value = str_replace('*', ' ', $value);
+			$value = ereg_replace('[ ]+', ' ', $value);
+			$value = str_replace(' ', '%', $value);
 		}else{
 			$mod = $keys[$key]['mod'];
 		}
 		switch($mod){
 			case '=':
-				$whereParts[] = "`{$key}`='{$value}'";
+				$whereParts[] = "`{$column}`='{$value}'";
 				break;
 			case 'LIKE':
-				$value = ereg_replace('[ ]+', ' ', $value);
-				$value = str_replace(' ', '%', $value);
-				$whereParts[] = "`{$key}` LIKE '{$value}'";
+				$whereParts[] = "`{$column}` LIKE '{$value}'";
+				break;
+			case '>=':
+			case '<=':
+			case '>':
+			case '<':
+				$whereParts[] = "`{$column}` {$keys[$key]['mod']} '{$value}'";
 				break;
 		}
 	}
