@@ -23,7 +23,7 @@ $host   = isset($_REQUEST['host'])    ? $_REQUEST['host']    : null;
 $where = '0=0';
 
 function sql_filter_last($value){
-	return date('Y-m-d H:i:s', strtotime('now -' . $value));
+	return date('Y-m-d H:i:s', strtotime('now -' . trim($value)));
 }
 
 if($query){
