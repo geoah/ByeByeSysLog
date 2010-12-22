@@ -63,7 +63,6 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 					'pid',
 					'msg'
 				],
-				autoLoad:true,
 				storeId: this.table
 			}),
 			stripeRows: true,
@@ -116,7 +115,7 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 	},
 	
 	onRender:function(){
-		//this.getStore().load({params: {start:0, limit:50}});
+		this.getStore().load({params: {start:0, limit:50}});
 		Bb.sysLogGrid.superclass.onRender.apply(this, arguments);
 	}
 });
