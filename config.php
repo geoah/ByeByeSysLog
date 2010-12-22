@@ -1,5 +1,10 @@
 <?php
 
+session_start();
+
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+
 // database connection settings
 $server   = 'localhost';
 $username = 'root';
@@ -18,3 +23,7 @@ $fqdns = array(
 	'10.10.0.2' => 'Cisco 876',
 	'DC1' => 'Domain Controller'
 );
+
+
+$ldap_url = '10.10.0.3';
+$ldap_domain = 'your.local.domain.com';

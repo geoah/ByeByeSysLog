@@ -14,9 +14,9 @@ SysLog-NG Configuration Example
 # Various tweaks for how syslog-ng does it's job.
 options {
 	ts_format(rfc3164);
-	time_sleep(30);
-	time_reap(30);
-	mark_freq(30);
+	#time_sleep(30);
+	#time_reap(30);
+	#mark_freq(30);
 	keep_hostname(yes);
 	keep_timestamp(no);
 	chain_hostnames(no);

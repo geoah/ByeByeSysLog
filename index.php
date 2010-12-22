@@ -1,3 +1,15 @@
+<?php
+	require_once('config.php');
+	
+	if(@$_GET['logout']==true) {
+		$_SESSION['authenticated'] = false;
+		unset($_SESSION['authenticated']);
+		header('Location: index.php');
+		exit();
+	}
+	
+	require_once('auth.php');
+?>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,6 +29,8 @@
         .x-grid3-row-over { background-image: none; border-width: 0px; border-bottom: 1px solid #CCC;}
         .row-red { color: maroon; }
         h1 { font-family: Verdana, Arial; font-size: 18px; line-height: 35px; font-weight: normal; padding-left: 5px; }
+        
+        .float-left { float: left; }
     </style> 
 
     <!-- ** Javascript ** -->
@@ -46,7 +60,7 @@
 				items: [
 					{
 						region: 'north',
-						html: '<h1>ByeByeSysLog</h1>',
+						html: '<h1 class="float-left">ByeByeSysLog</h1><div class="float-left">(<a href="index.php?logout=true">logout</a>)</div>',
 						height: 40
 					},
 					'sysLogHosts',
