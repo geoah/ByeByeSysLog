@@ -23,7 +23,18 @@ $host   = isset($_REQUEST['host'])    ? $_REQUEST['host']    : null;
 $where = '0=0';
 
 function sql_filter_last($value){
-	return date('Y-m-d H:i:s', strtotime('now -' . trim($value)));
+	$value = strtotime('now -' . trim($value));
+	if($value==false){
+		return false;
+	}
+	return date('Y-m-d H:i:s', $value);
+}
+function sql_filter_fromto($value){
+	$value = strtotime(trim($value));
+	if($value==false){
+		return false;
+	}
+	return date('Y-m-d H:i:s', $value);
 }
 
 if($query){
@@ -37,7 +48,9 @@ if($query){
 		'program'=>array('mod'=>'=', 'wildcard'=>true),
 		'pid'=>array('mod'=>'=', 'wildcard'=>true),
 		'msg'=>array('mod'=>'LIKE', 'wildcard'=>true, 'prepend'=>'*', 'append'=>'*'),
-		'last'=>array('mod'=>'>=', 'column'=>'datetime', 'wildcard'=>false, 'function'=>'sql_filter_last')
+		'last'=>array('mod'=>'>=', 'column'=>'datetime', 'wildcard'=>false, 'function'=>'sql_filter_last'),
+		'from'=>array('mod'=>'>=', 'column'=>'datetime', 'wildcard'=>false, 'function'=>'sql_filter_fromto'),
+		'to'=>array('mod'=>'<=', 'column'=>'datetime', 'wildcard'=>false, 'function'=>'sql_filter_fromto'),
 	);
 	
 	$positions = array();
@@ -58,6 +71,9 @@ if($query){
 	foreach($pairs as $key=>$value){
 		if(@$keys[$key]['function']){
 			$value = $keys[$key]['function']($value);
+		}
+		if($value===false){
+			continue;
 		}
 		if(@$keys[$key]['column']){
 			$column = $keys[$key]['column'];
