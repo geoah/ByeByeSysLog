@@ -14,8 +14,8 @@ mysql_select_db($database) or die("Could not select database");
 // collect request parameters
 $start  = isset($_REQUEST['start'])  ? $_REQUEST['start']  :  0;
 $count  = isset($_REQUEST['limit'])  ? $_REQUEST['limit']  : 50;
-$sort   = isset($_REQUEST['sort'])   ? $_REQUEST['sort']   : '';
-$dir    = isset($_REQUEST['dir'])    ? $_REQUEST['dir']    : 'ASC';
+$sort   = isset($_REQUEST['sort'])   ? $_REQUEST['sort']   : 'id';
+$dir    = isset($_REQUEST['dir'])    ? $_REQUEST['dir']    : 'DESC';
 
 $query  = isset($_REQUEST['query'])    ? $_REQUEST['query']    : null;
 $host   = isset($_REQUEST['host'])    ? $_REQUEST['host']    : null;

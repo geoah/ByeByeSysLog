@@ -49,7 +49,7 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 				},
 				autoDestroy: true,
 				sortInfo: {
-					field: 'datetime',
+					field: 'id',
 					direction: 'DESC'
 				},
 				root: 'data',
