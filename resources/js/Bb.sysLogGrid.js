@@ -108,7 +108,7 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 			tbar: [
 				new Ext.ux.form.SearchField({
 					store: store,
-					width: 'auto'
+					width: 500
 				})
 			]
 		};

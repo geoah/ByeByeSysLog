@@ -26,17 +26,17 @@ if($query){
 	$whereParts = array();
 	$query = trim($query);
 	$keys = array(
-		'host',
-		'facility',
-		'level',
-		'datetime',
-		'program',
-		'pid',
-		'msg',
+		'host'=>array('mod'=>'=', 'wildcard'=>true),
+		'facility'=>array('mod'=>'=', 'wildcard'=>true),
+		'level'=>array('mod'=>'=', 'wildcard'=>true),
+		'datetime'=>array('mod'=>'=', 'wildcard'=>true),
+		'program'=>array('mod'=>'=', 'wildcard'=>true),
+		'pid'=>array('mod'=>'=', 'wildcard'=>true),
+		'msg'=>array('mod'=>'LIKE', 'wildcard'=>true, 'prepend'=>'*', 'append'=>'*'),
 	);
 	
 	$positions = array();
-	foreach($keys as $key){
+	foreach(array_keys($keys) as $key){
 		$position = strpos($query, $key.':');
 		if($position!==false){
 			$positions[$key] = $position;
@@ -51,7 +51,24 @@ if($query){
 	}
 	
 	foreach($pairs as $key=>$value){
-		$whereParts[] = "`{$key}` LIKE '%{$value}%'";
+		$value = @$keys[$key]['prepend'] . $value . @$keys[$key]['append'];
+		$allowWildcard = $keys[$key]['wildcard'];
+		if(($allowWildcard==true)&&(strstr($value, '*'))){
+			$mod = 'LIKE';
+			$value = str_replace('*', ' ', $value);
+		}else{
+			$mod = $keys[$key]['mod'];
+		}
+		switch($mod){
+			case '=':
+				$whereParts[] = "`{$key}`='{$value}'";
+				break;
+			case 'LIKE':
+				$value = ereg_replace('[ ]+', ' ', $value);
+				$value = str_replace(' ', '%', $value);
+				$whereParts[] = "`{$key}` LIKE '{$value}'";
+				break;
+		}
 	}
 	
 	$where .= ' AND ' . implode(' AND ', $whereParts);
@@ -81,4 +98,4 @@ while($row = mysql_fetch_assoc($rs)) {
 }
 
 // return response to client
-echo '{"total":"'.$total.'","data":'.json_encode($arr).'}';
+echo '{"sql":"'.$sql.'","total":"'.$total.'","data":'.json_encode($arr).'}';

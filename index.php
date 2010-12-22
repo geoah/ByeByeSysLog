@@ -8,8 +8,6 @@
     <link rel="stylesheet" type="text/css" href="resources/libs/ext/resources/css/ext-all.css" />
 
     <!-- overrides to base library -->
-    <link rel="stylesheet" type="text/css" href="resources/libs/ext-ux/gridfilters/css/GridFilters.css" />
-    <link rel="stylesheet" type="text/css" href="resources/libs/ext-ux/gridfilters/css/RangeMenu.css" />
 
     <style type="text/css">
 		.x-grid3-row td { -moz-user-select: text; -webkit-user-select: text; }
@@ -32,22 +30,7 @@
 
     <!-- extensions -->
     <script type="text/javascript" src="resources/libs/ext-ux/RowExpander.js"></script>
-    <script type="text/javascript" src="resources/libs/ext-ux/FieldAutoExpand.js"></script> 
     <script type="text/javascript" src="resources/libs/ext-ux/SearchField.js"></script> 
-	
-	<!--
-	<script type="text/javascript" src="resources/libs/ext-ux/GridHeaderFilters.js"></script>
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/menu/RangeMenu.js"></script>
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/menu/ListMenu.js"></script>
-	
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/GridFilters.js"></script>
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/Filter.js"></script>
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/StringFilter.js"></script>
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/DateFilter.js"></script>
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/ListFilter.js"></script>
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/NumericFilter.js"></script>
-	<script type="text/javascript" src="resources/libs/ext-ux/gridfilters/filter/BooleanFilter.js"></script>
-	-->
 	
     <!-- page specific -->
 	<script type="text/javascript" src="resources/js/Bb.sysLogGrid.js"></script>
