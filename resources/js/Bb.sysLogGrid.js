@@ -55,6 +55,7 @@ Bb.sysLogGrid = Ext.extend(Ext.grid.GridPanel, {
 				root: 'data',
 				totalProperty: 'total',
 				fields: [ 
+					'id',
 					'host',
 					'facility',
 					'level',
