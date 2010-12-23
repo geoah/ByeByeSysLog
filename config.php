@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 
 session_start();
 
@@ -25,5 +26,8 @@ $fqdns = array(
 );
 
 
-$ldap_url = '10.10.0.3';
-$ldap_domain = 'your.local.domain.com';
+$ldap = array(
+	'server' => 'ldaps://domain.com',
+	'port' => 636,
+	'top' => 'dc=domain,dc=com'
+);

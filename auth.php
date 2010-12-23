@@ -1,14 +1,52 @@
 <?php
 
-$ldapconn = @ldap_connect($ldap_url);
+function LDAPconnect(){
+	global $ldap;
+	
+    $ds = ldap_connect($ldap['server'], $ldap['port']);
+    if (!$ds) {
+        return FALSE;
+    }
+    if (!ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3)) {
+        @ldap_close($ds);
+        return FALSE;
+    }
+    return $ds;
+}
+
+
+function LDAPauth($rdn, $passwd){
+	global $ldap;
+	
+    $ds = LDAPconnect();
+    $dn = $rdn .",". $ldap['top'];
+
+    if (!ldap_bind($ds, $dn, $passwd)) {
+        return FALSE;
+    }
+    return $ds;
+} 
+
+@$ldapconn = LDAPconnect();
 
 if(@$_SESSION['authenticated'] !== true){
 	if(@$ldapconn){
 		if (@$_POST['auth_user'] && @$_POST['auth_pass']){
-			$ldapbind = @ldap_bind($ldapconn, $_POST['auth_user'].'@'.$ldap_domain, $_POST['auth_pass']);
+			$ldapbind = @LDAPauth($_POST['auth_user'], $_POST['auth_pass']);
 		
 			if ($ldapbind){
 				$_SESSION['authenticated'] = true;
+				
+				foreach($user[0]['memberof'] as $group){
+					$temp = substr($group, 0, stripos($group, ","));
+					$temp = strtolower(str_replace("CN=", "", $temp));
+				
+					echo "{$temp}<br />";   // Print out Group’s name
+					$groups[] .= $temp;
+				}
+				exit();
+				
+				
 				header('Location: index.php');
 				exit();
 			} else {
@@ -26,4 +64,5 @@ if(@$_SESSION['authenticated'] !== true){
 		require_once('views/login.php');
 		exit();
 	}
+	
 }
