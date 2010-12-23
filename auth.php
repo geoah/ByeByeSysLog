@@ -44,6 +44,9 @@ if(@$_SESSION['authenticated'] !== true){
 					echo "{$temp}<br />";   // Print out Group’s name
 					$groups[] .= $temp;
 				}
+				exit();
+				
+				
 				header('Location: index.php');
 				exit();
 			} else {
