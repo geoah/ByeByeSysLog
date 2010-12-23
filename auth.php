@@ -19,7 +19,7 @@ function LDAPauth($rdn, $passwd){
 	global $ldap;
 	
     $ds = LDAPconnect();
-    $dn = $rdn .",". $ldap['top'];
+    $dn = "uid=".$rdn .",". $ldap['top'];
 
     if (!ldap_bind($ds, $dn, $passwd)) {
         return FALSE;
