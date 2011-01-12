@@ -7,8 +7,9 @@
 		header('Location: index.php');
 		exit();
 	}
-	
-	require_once('auth.php');
+	if(@$ldap){
+		require_once('auth.php');
+	}
 ?>
 <html>
 <head>
@@ -18,6 +19,7 @@
     <!-- ** CSS ** -->
     <!-- base library -->
     <link rel="stylesheet" type="text/css" href="resources/libs/ext/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="resources/libs/ext-ux/livegrid/css/ext-ux-livegrid.css" />
 
     <!-- overrides to base library -->
 
@@ -45,6 +47,7 @@
     <!-- extensions -->
     <script type="text/javascript" src="resources/libs/ext-ux/RowExpander.js"></script>
     <script type="text/javascript" src="resources/libs/ext-ux/SearchField.js"></script> 
+    <script type="text/javascript" src="resources/libs/ext-ux/livegrid-all.js"></script> 
 	
     <!-- page specific -->
 	<script type="text/javascript" src="resources/js/Bb.sysLogGrid.js"></script>

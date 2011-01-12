@@ -133,4 +133,4 @@ while($row = mysql_fetch_assoc($rs)) {
 }
 
 // return response to client
-echo '{"sql":"'.$sql.'","total":"'.$total.'","data":'.json_encode($arr).'}';
+echo '{"version":"1","sql":"'.$sql.'","total":"'.$total.'","data":'.json_encode($arr).'}';
