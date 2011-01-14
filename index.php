@@ -85,7 +85,6 @@
 						id:'sysLogTabs'
 					})
 				]
-				//new Bb.sysLogGrid({table: 'mail'})
 			}).show();
 			
 			new Ext.Window({

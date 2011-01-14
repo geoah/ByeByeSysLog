@@ -117,7 +117,7 @@ if($query){
 	$where .= ' AND ' . implode(' AND ', $whereParts);
 	
 	if($config['sphinx']['enabled']==true && count($pairs)==0 && @$query){
-		include('sphinx-api/sphinxapi.php');
+		include('libs/sphinx/sphinxapi.php');
 		
 		// create Sphinx client
 		$sphx = new SphinxClient();
