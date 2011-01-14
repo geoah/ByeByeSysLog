@@ -36,6 +36,13 @@ function sql_filter_fromto($value){
 	}
 	return date('Y-m-d H:i:s', $value);
 }
+function sql_filter_date($value){
+	$value = strtotime(trim($value));
+	if($value==false){
+		return false;
+	}
+	return date('Y-m-d', $value).' %';
+}
 
 if($query){
 	$whereParts = array();
@@ -45,6 +52,7 @@ if($query){
 		'facility'=>array('mod'=>'=', 'wildcard'=>true),
 		'level'=>array('mod'=>'=', 'wildcard'=>true),
 		'datetime'=>array('mod'=>'=', 'wildcard'=>true),
+		'date'=>array('mod'=>'LIKE', 'column'=>'datetime', 'wildcard'=>true, 'function'=>'sql_filter_date'),
 		'program'=>array('mod'=>'=', 'wildcard'=>true),
 		'pid'=>array('mod'=>'=', 'wildcard'=>true),
 		'msg'=>array('mod'=>'LIKE', 'wildcard'=>true, 'prepend'=>'*', 'append'=>'*'),
@@ -107,6 +115,27 @@ if($query){
 	}
 	
 	$where .= ' AND ' . implode(' AND ', $whereParts);
+	
+	if($config['sphinx']['enabled']==true && count($pairs)==0 && @$query){
+		include('sphinx-api/sphinxapi.php');
+		
+		// create Sphinx client
+		$sphx = new SphinxClient();
+		
+		// set server and search parameters
+		$sphx->setServer($config['sphinx']['server'], $config['sphinx']['port']);
+		$sphx->setLimits(0, 500, 1000);
+		$sphx->setMatchMode(SPH_MATCH_ALL);
+		$sphx->setSortMode(SPH_SORT_ATTR_DESC, 'datetime');
+		
+		// get and run query from command-line
+		$result = $sphx->query($query, 'idx_logs,idx_delta_logs');
+		//echo $result['total_found'] . " hit(s) \n\n";
+		
+		// get document IDs
+		$ids = implode(',', array_keys($result['matches']));
+		$where = ' id IN ('.$ids.')';
+	}
 }
 
 if($host) $where .= " AND host = '".$host."'";

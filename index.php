@@ -24,6 +24,7 @@
     <!-- overrides to base library -->
 
     <style type="text/css">
+    	body { font-family: Verdana, Arial; font-size: small; }
 		.x-grid3-row td { -moz-user-select: text; -webkit-user-select: text; }
 	    .x-grid3-row-body pre { color: #444; padding: 5px;  white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; }
         .x-grid3-row-alt { background-color: #edf1ff; border-bottom: 1px solid #CCC; }
@@ -33,8 +34,16 @@
         h1 { font-family: Verdana, Arial; font-size: 18px; line-height: 35px; font-weight: normal; padding-left: 5px; }
         
         .float-left { float: left; }
-    </style> 
-
+        
+        .x-window-plain .x-window-body { background-color: #FFF !important; }
+        
+		.help { padding: 6px; padding-top: 1px; }
+		.help h3 { margin: 0px; margin-top: 5px; font-size: 13px; }
+		.help ul { margin: 0px; }
+		.help ul { margin-left: 5px !important; }
+		.help h3 small { color: #444; font-size: 11px !important; }
+		.help ul small { color: #444; display: block; font-size: 11px !important; }
+	</style>
     <!-- ** Javascript ** -->
     <!-- ExtJS library: base/adapter -->
     <script type="text/javascript" src="resources/libs/ext/adapter/ext/ext-base.js"></script>

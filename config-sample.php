@@ -31,3 +31,9 @@ $ldap = array(
 	'port' => 636,
 	'top' => 'dc=domain,dc=com'
 );
+
+$config['sphinx'] = array(
+	'enabled' => true,
+	'server' => 'sphinx.domain.com',
+	'port' => 3312
+);
