@@ -93,6 +93,7 @@ Bb.sysLogGrid = Ext.extend(Ext.ux.grid.livegrid.GridPanel, {
 								resizable: true,
 								resizeHandles: 'se',
 								autoScroll: true,
+								collapsible: true,
 								autoLoad: 'help.php'
 							});
 						}
