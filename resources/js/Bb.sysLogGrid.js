@@ -18,7 +18,7 @@ Bb.sysLogGrid = Ext.extend(Ext.ux.grid.livegrid.GridPanel, {
 					rp.body = '<p>' + msg + '</p>';
 				}
 			},
-			nearLimit: 100,
+			nearLimit: 500,
 			loadMask: {
 				msg: 'Buffering. Please wait...'
 			}
@@ -29,7 +29,7 @@ Bb.sysLogGrid = Ext.extend(Ext.ux.grid.livegrid.GridPanel, {
 			store: new Ext.ux.grid.livegrid.Store({
 				autoLoad: true,
 				url: 'grid.php?table=' + this.table + '&host=' + this.host,
-				bufferSize: 300,
+				bufferSize: 1000,
 				storeId: this.table,
 				reader: new Ext.ux.grid.livegrid.JsonReader({
 					root: 'data',
