@@ -9,10 +9,14 @@ mysql_pconnect($config['mysql']['server'], $config['mysql']['username'], $config
 mysql_select_db($config['mysql']['database']) or die("Could not select database");
 
 if($config['mysql']['all_tables']){
-	$tables = mysql_fetch_array(mysql_list_tables($config['mysql']['database']), MYSQL_NUM);
+	$tables = array();
+	$existingTablesList = mysql_list_tables($config['mysql']['database']);
+	while(list($existingTableName) = mysql_fetch_array($existingTablesList, MYSQL_NUM)){
+		$tables[] = $existingTableName;
+	}
 }else{
 	// keep only tables that actually exist and we have access to.
-	$tempTables = $tables;
+	$tempTables = $config['mysql']['tables'];
 	$tables = array();
 	$existingTablesList = mysql_list_tables($config['mysql']['database']);
 	while(list($existingTableName) = mysql_fetch_array($existingTablesList, MYSQL_NUM)){
@@ -25,6 +29,7 @@ if($config['mysql']['all_tables']){
 	unset($tempTables, $existingTablesList, $existingTableName);
 }
 
+sort($tables);
 
 // find all different hosts from tables.
 $hosts = array();
