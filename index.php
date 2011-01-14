@@ -1,5 +1,5 @@
 <?php
-	require_once('config.php');
+	require_once('bootstrap.php');
 	
 	if(@$_GET['logout']==true) {
 		$_SESSION['authenticated'] = false;
@@ -7,9 +7,7 @@
 		header('Location: index.php');
 		exit();
 	}
-	if(@$ldap){
-		require_once('auth.php');
-	}
+
 ?>
 <html>
 <head>
@@ -100,7 +98,7 @@
 				autoScroll: true,
 				collapsible: true,
 				collapsed: true,
-				autoLoad: 'help.php'
+				autoLoad: 'views/help.php'
 			}).show().anchorTo('tr').collapse();
 		});
 	</script>

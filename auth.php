@@ -1,7 +1,8 @@
 <?php
 
 function LDAPconnect(){
-	global $ldap;
+	global $config;
+	$ldap = $config['ldap'];
 	
     $ds = ldap_connect($ldap['server'], $ldap['port']);
     if (!$ds) {
@@ -16,7 +17,8 @@ function LDAPconnect(){
 
 
 function LDAPauth($rdn, $passwd){
-	global $ldap;
+	global $config;
+	$ldap = $config['ldap'];
 	
     $ds = LDAPconnect();
     $dn = "uid=".$rdn .",". $ldap['top'];

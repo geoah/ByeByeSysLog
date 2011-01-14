@@ -1,37 +1,38 @@
 <?php
 
-require_once('config.php');
-require_once('json.php');
+require_once('bootstrap.php');
 
 if(@$_GET['host']) $host = $_GET['host']; else $host = null;
 
-
 // connect to database
-mysql_pconnect($server, $username, $password) or die("Could not connect");
-mysql_select_db($database) or die("Could not select database");
+mysql_pconnect($config['mysql']['server'], $config['mysql']['username'], $config['mysql']['password']) or die("Could not connect");
+mysql_select_db($config['mysql']['database']) or die("Could not select database");
 
-// keep only tables that actually exist and we have access to.
-$tempTables = $tables;
-$tables = array();
-$existingTablesList = mysql_list_tables($database);
-while(list($existingTableName) = mysql_fetch_array($existingTablesList)){
-	$existingTables[] = $existingTableName;
+if($config['mysql']['all_tables']){
+	$tables = mysql_fetch_array(mysql_list_tables($config['mysql']['database']), MYSQL_NUM);
+}else{
+	// keep only tables that actually exist and we have access to.
+	$tempTables = $tables;
+	$tables = array();
+	$existingTablesList = mysql_list_tables($config['mysql']['database']);
+	while(list($existingTableName) = mysql_fetch_array($existingTablesList, MYSQL_NUM)){
+		$existingTables[] = $existingTableName;
+	}
+	foreach($tempTables as &$table){
+		if(in_array($table, $existingTables))
+			$tables[] = $table;
+	}
+	unset($tempTables, $existingTablesList, $existingTableName);
 }
-foreach($tempTables as &$table){
-	if(in_array($table, $existingTables))
-		$tables[] = $table;
-}
-unset($tempTables, $existingTablesList, $existingTableName);
+
 
 // find all different hosts from tables.
-if(!isset($hosts) || !empty($hosts)){
-	$hosts = array();
-	foreach($tables as $table){
-		$query = "SELECT DISTINCT(host) host FROM {$table}";
-		$rs = mysql_query($query);
-		while (list($host) = mysql_fetch_array($rs)) {
-			$hosts[$host][] = $table;
-		}
+$hosts = array();
+foreach($tables as $table){
+	$query = "SELECT DISTINCT(host) host FROM {$table}";
+	$rs = mysql_query($query);
+	while (list($host) = mysql_fetch_array($rs)) {
+		$hosts[$host][] = $table;
 	}
 }
 
@@ -56,6 +57,8 @@ foreach($tables as $feature){
 	);
 }
 $tree[] = $node;
+
+$fqdn = $config['hostnames'];
 
 foreach($hosts as $host=>$features){
 	$fqdn = @$fqdns[$host] ? $fqdns[$host] : $host;

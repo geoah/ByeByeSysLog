@@ -1,15 +1,14 @@
 <?php
 
-require_once('config.php');
-require_once('json.php');
+require_once('bootstrap.php');
 
 $table = @$_GET['table'];
 if(!@$table) die();
 if(@$_GET['host'] && @count($_GET['host'])>0) $host = $_GET['host']; else $host = null;
 
 // connect to database
-mysql_pconnect($server, $username, $password) or die("Could not connect");
-mysql_select_db($database) or die("Could not select database");
+mysql_pconnect($config['mysql']['server'], $config['mysql']['username'], $config['mysql']['password']) or die("Could not connect");
+mysql_select_db($config['mysql']['database']) or die("Could not select database");
 
 // collect request parameters
 $start  = isset($_REQUEST['start'])  ? $_REQUEST['start']  :  0;
@@ -116,7 +115,7 @@ if($query){
 	
 	$where .= ' AND ' . implode(' AND ', $whereParts);
 	
-	if($config['sphinx']['enabled']==true && count($pairs)==0 && @$query){
+	if(@$config['sphinx']['enabled']==true && count($pairs)==0 && @$query){
 		include('libs/sphinx/sphinxapi.php');
 		
 		// create Sphinx client
