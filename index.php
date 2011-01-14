@@ -87,9 +87,26 @@
 				]
 				//new Bb.sysLogGrid({table: 'mail'})
 			}).show();
+			
+			new Ext.Window({
+				id: 'help-window',
+				title: 'Query help',
+				icon: 'resources/icons/help.png',
+				width:300,
+				height:500,
+				closable: false,
+				plain: true,
+				resizable: true,
+				resizeHandles: 'se',
+				autoScroll: true,
+				collapsible: true,
+				collapsed: true,
+				autoLoad: 'help.php'
+			}).show().anchorTo('tr').collapse();
 		});
 	</script>
 </head>
 <body>
+	<div id="tr" style="position: fixed; top: 6px; left: 100%;"></div>
 </body>
 </html>

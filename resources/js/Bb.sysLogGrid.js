@@ -72,33 +72,7 @@ Bb.sysLogGrid = Ext.extend(Ext.ux.grid.livegrid.GridPanel, {
 				new Ext.ux.form.SearchField({
 					store: Ext.StoreMgr.get(this.table),
 					width: 500
-				}),
-				' ',
-				'-',
-				{
-					text: 'Help', 
-					icon: 'resources/icons/help.png', 
-					handler: function(){
-						var win = Ext.getCmp('help-window');
-						if(!win){
-							win = new Ext.Window({
-								id: 'help-window',
-								title: 'Query help',
-								icon: 'resources/icons/help.png',
-								layout: 'fit',
-								width:300,
-								height:500,
-								closeAction: 'close',
-								plain: true,
-								resizable: true,
-								resizeHandles: 'se',
-								autoScroll: true,
-								collapsible: true,
-								autoLoad: 'help.php'
-							});
-						}
-						win.show(this);
-				}}
+				})
 			]
 		};
 		Ext.apply(this, Ext.apply(this.initialConfig, config));
