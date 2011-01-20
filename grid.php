@@ -128,8 +128,8 @@ if($query){
 		$sphx->setSortMode(SPH_SORT_ATTR_DESC, 'datetime');
 		
 		// get and run query from command-line
-		$indexesDefault = @$config['sphinx']['indexes']['default'] ? $config['sphinx']['indexes']['default'] : 'idx_logs,idx_delta_logs';
-		$indexes = @$config['sphinx']['indexes'][$table] ? $config['sphinx']['indexes'][$table] : $indexesDefault;
+		$indexesDefault = @$config['sphinx']['indexes'] ? $config['sphinx']['indexes'] : 'idx_logs,idx_delta_logs';
+		$indexes = @$config['sphinx']['indexes_'.$table] ? $config['sphinx']['indexes_'.$table] : $indexesDefault;
 		$result = $sphx->query($query, $indexes);
 		//echo $result['total_found'] . " hit(s) \n\n";
 		
