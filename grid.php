@@ -128,7 +128,9 @@ if($query){
 		$sphx->setSortMode(SPH_SORT_ATTR_DESC, 'datetime');
 		
 		// get and run query from command-line
-		$result = $sphx->query($query, 'idx_logs,idx_delta_logs');
+		$indexesDefault = @$config['sphinx']['indexes']['default'] ? $config['sphinx']['indexes']['default'] : 'idx_logs,idx_delta_logs';
+		$indexes = @$config['sphinx']['indexes'][$table] ? $config['sphinx']['indexes'][$table] : $indexesDefault;
+		$result = $sphx->query($query, $indexes);
 		//echo $result['total_found'] . " hit(s) \n\n";
 		
 		// get document IDs

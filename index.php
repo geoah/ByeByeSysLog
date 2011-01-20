@@ -93,7 +93,7 @@
 				height:500,
 				closable: false,
 				plain: true,
-				resizable: true,
+				resizable: false,
 				resizeHandles: 'se',
 				autoScroll: true,
 				collapsible: true,
