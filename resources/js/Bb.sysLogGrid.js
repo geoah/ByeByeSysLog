@@ -75,7 +75,7 @@ Bb.sysLogGrid = Ext.extend(Ext.ux.grid.livegrid.GridPanel, {
 				}),
 				'->',
 				{
-					text: 'Get plain text',
+					text: 'Export to text',
 					handler: function(btn){
 						var store = this.getStore();
 						var q = store.proxy.url;
@@ -85,6 +85,7 @@ Bb.sysLogGrid = Ext.extend(Ext.ux.grid.livegrid.GridPanel, {
 						q = q + '&download=true';
 						window.open(q,'_newtab');
 					},
+					icon: 'resources/icons/page_white_go.png',
 					scope: this
 				}
 			]
