@@ -12,12 +12,14 @@ mysql_select_db($config['mysql']['database']) or die("Could not select database"
 
 // collect request parameters
 $start  = isset($_REQUEST['start'])  ? $_REQUEST['start']  :  0;
-$count  = isset($_REQUEST['limit'])  ? $_REQUEST['limit']  : 50;
+$count  = isset($_REQUEST['limit'])  ? $_REQUEST['limit']  : (isset($_REQUEST['download']) ? 5000 : 300);
 $sort   = isset($_REQUEST['sort'])   ? $_REQUEST['sort']   : 'id';
 $dir    = isset($_REQUEST['dir'])    ? $_REQUEST['dir']    : 'DESC';
 
 $query  = isset($_REQUEST['query'])    ? $_REQUEST['query']    : null;
 $host   = isset($_REQUEST['host'])    ? $_REQUEST['host']    : null;
+
+$download = isset($_REQUEST['download']) ? true : false;
 
 $where = '0=0';
 
@@ -163,4 +165,12 @@ while($row = mysql_fetch_assoc($rs)) {
 }
 
 // return response to client
-echo '{"version":"1","sql":"'.$sql.'","total":"'.$total.'","data":'.json_encode($arr).'}';
+if($download){
+	echo '<pre>';
+	foreach($arr as $r){
+		echo date('M j H:i:s', strtotime($r['datetime'])) . ' ' . $r['host'] . ' ' . $r['program'] . ' [' . $r['pid'] . ' ' . $r['facility'] . '.' . $r['level'] . '] ' . $r['msg'] . "\n";
+	}
+	echo '</pre>';
+}else{
+	echo '{"version":"1","sql":"'.$sql.'","total":"'.$total.'","data":'.json_encode($arr).'}';
+}

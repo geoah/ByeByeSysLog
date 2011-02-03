@@ -72,7 +72,21 @@ Bb.sysLogGrid = Ext.extend(Ext.ux.grid.livegrid.GridPanel, {
 				new Ext.ux.form.SearchField({
 					store: Ext.StoreMgr.get(this.table),
 					width: 500
-				})
+				}),
+				'->',
+				{
+					text: 'Get plain text',
+					handler: function(btn){
+						var store = this.getStore();
+						var q = store.proxy.url;
+						if(store.lastOptions.params && store.lastOptions.params.query){
+							q = q + '&query=' + store.lastOptions.params.query;
+						}
+						q = q + '&download=true';
+						window.open(q,'_newtab');
+					},
+					scope: this
+				}
 			]
 		};
 		Ext.apply(this, Ext.apply(this.initialConfig, config));
